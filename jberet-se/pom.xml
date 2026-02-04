@@ -69,6 +69,11 @@ SPDX-License-Identifier: EPL-2.0
             <groupId>org.infinispan</groupId>
             <artifactId>infinispan-core</artifactId>
         </dependency>
+<dependency>
+    <groupId>org.jberet</groupId>
+    <artifactId>jberet-support</artifactId>
+    <version>1.0.2.Final</version>
+</dependency>
         <dependency>
             <groupId>org.infinispan</groupId>
             <artifactId>infinispan-commons</artifactId>
@@ -104,6 +109,57 @@ SPDX-License-Identifier: EPL-2.0
                     </environmentVariables>
                 </configuration>
             </plugin>
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                <execution>
+                    <phase>install</phase>
+                    <goals>
+                    <goal>copy-dependencies</goal>
+                    </goals>
+                    <configuration>
+                    <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                    </configuration>
+                </execution>
+                </executions>
+          </plugin>
+    <plugin>
+      <!-- Build an executable JAR -->
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-jar-plugin</artifactId>
+      <version>3.1.0</version>
+      <configuration>
+        <archive>
+          <manifest>
+            <addClasspath>true</addClasspath>
+            <classpathPrefix>lib/</classpathPrefix>
+            <mainClass>org.jberet.se.Main</mainClass>
+          </manifest>
+        </archive>
+      </configuration>
+    </plugin>
+            <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <executions>
+                <execution>
+                <phase>package</phase>
+                <goals>
+                    <goal>single</goal>
+                </goals>
+                </execution>
+            </executions>
+            <configuration>
+                <archive>
+                <manifest>
+                    <addClasspath>true</addClasspath>
+                    <mainClass>org.jberet.se.Main</mainClass>
+                </manifest>
+                </archive>
+                <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+                </descriptorRefs>
+            </configuration>
+            </plugin> 
         </plugins>
     </build>
 </project>
