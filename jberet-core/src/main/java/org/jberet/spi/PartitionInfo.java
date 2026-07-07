@@ -16,6 +16,10 @@ import org.jberet.job.model.Step;
 import org.jberet.runtime.JobExecutionImpl;
 import org.jberet.runtime.PartitionExecutionImpl;
 
+/**
+ * @deprecated This class is no longer supported. There is no replacement.
+ */
+@Deprecated(forRemoval = true, since="3.2")
 public class PartitionInfo implements Serializable {
     private static final long serialVersionUID = -8906466052166191853L;
 
