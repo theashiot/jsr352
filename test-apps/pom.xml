@@ -49,7 +49,6 @@
         <module>throttle</module>
         <module>amqp</module>
         <module>upsertWriter</module>
-        <module>cluster</module>
         <module>cassandraInject</module>
         <module>jdbcBatchletReaderWriter</module>
         <module>serialization</module>
