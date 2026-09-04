@@ -512,6 +512,7 @@ public final class ChunkRunner extends AbstractRunner<StepContextImpl> implement
     }
 
     private void beginCheckpoint(final ProcessingInfo processingInfo) throws Exception {
+        BatchLogger.LOGGER.debug("****Beginning Checkpoint");
         if (checkpointPolicy.equals("item") && timeLimit > 0) {
             processingInfo.expiresAt = System.currentTimeMillis() + ( timeLimit * 1000 );
         }
@@ -549,6 +550,7 @@ public final class ChunkRunner extends AbstractRunner<StepContextImpl> implement
     }
 
     private void doCheckpoint(final ProcessingInfo processingInfo) throws Exception {
+        BatchLogger.LOGGER.debug("****Doing Checkpoint");
         final boolean nothingToWrite = outputList.size() == 0 && processingInfo.chunkState == ChunkState.DEPLETED;
 
         //to back up reader and writer checkpointInfo, and if tx commit fails, restore to previous valid state
@@ -576,7 +578,7 @@ public final class ChunkRunner extends AbstractRunner<StepContextImpl> implement
 
             stepOrPartitionExecution.setReaderCheckpointInfo(itemReader.checkpointInfo());
             stepOrPartitionExecution.setWriterCheckpointInfo(itemWriter.checkpointInfo());
-            final int savedCount = batchContext.savePersistentData(false);
+            final int savedCount = batchContext.savePersistentData(false); //Check call for getJobExecutions0 here on
             if (savedCount == 0) {
                 // the step or partition execution was not saved, because the batch status in job repository has been
                 // changed to STOPPING
