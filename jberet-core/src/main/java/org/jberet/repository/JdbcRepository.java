@@ -460,8 +460,7 @@ public final class JdbcRepository extends AbstractPersistentRepository {
 
     @Override
     public void updateJobExecution(final JobExecutionImpl jobExecution, final boolean fullUpdate, final boolean saveJobParameters) {
-        BatchLogger.LOGGER.debug("Inside updateJobExecution");
-        super.updateJobExecution(jobExecution, fullUpdate, saveJobParameters);
+         super.updateJobExecution(jobExecution, fullUpdate, saveJobParameters);
         final String update;
         if (fullUpdate) {
             if (saveJobParameters) {
@@ -470,12 +469,7 @@ public final class JdbcRepository extends AbstractPersistentRepository {
                 update = sqls.getProperty(UPDATE_JOB_EXECUTION);
             }
         } else {
-            LOGGER.debug("************INSIDE UPDATE JOB EXECUTION************");
-            LOGGER.debugf("Last update time is : %s",jobExecution.getLastUpdatedTime());
-            LOGGER.debugf("Start time is : %s",jobExecution.getStartTime());
             update = sqls.getProperty(UPDATE_JOB_EXECUTION_PARTIAL);
-            LOGGER.debug("Updated the job execution in database");
-            LOGGER.debug("**************************************************");
         }
 
         final Connection connection = getConnection();
@@ -722,9 +716,6 @@ public final class JdbcRepository extends AbstractPersistentRepository {
     public int savePersistentDataIfNotStopping(final JobExecution jobExecution, final AbstractStepExecution stepOrPartitionExecution) {
         if (stepOrPartitionExecution instanceof StepExecutionImpl) {
             //stepExecution is for the main step, and should map to the STEP_EXECUTION table
-            BatchLogger.LOGGER.debug("Saving step because of a checkpoint");
-            BatchLogger.LOGGER.debug("Let's update the lastupdated time");
-            BatchLogger.LOGGER.debug("Calling update JobExecution");
             return updateStepAndJobExecution0(stepOrPartitionExecution,
                     sqls.getProperty(UPDATE_STEP_EXECUTION_AND_JOB_EXECUTION_LASTUPDATETIME),
                     jobExecution.getExecutionId());
@@ -740,7 +731,6 @@ public final class JdbcRepository extends AbstractPersistentRepository {
         super.savePersistentData(jobExecution, stepOrPartitionExecution);
         if (stepOrPartitionExecution instanceof StepExecutionImpl) {
             //stepExecution is for the main step, and should map to the STEP_EXECUTIOIN table
-            BatchLogger.LOGGER.debug("Saving step");
             updateStepExecution(stepOrPartitionExecution);
         } else {
             //stepExecutionId is for a partition execution, and should map to the PARTITION_EXECUTION table
